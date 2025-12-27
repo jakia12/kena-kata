@@ -8,37 +8,8 @@ import Link from "next/link";
 export default function RegisterPage() {
   return (
     <Container className="py-10">
-      <div className="grid gap-8 lg:grid-cols-12 items-start">
-        {/* Left */}
-        <div className="lg:col-span-6">
-          <div className="rounded-3xl border border-slate-200 bg-sky-50 p-6 sm:p-10">
-            <div className="inline-flex items-center rounded-full bg-white/70 px-3 py-1 text-xs text-sky-700 border border-sky-100">
-              Create your NestMart account
-            </div>
-            <h1 className="mt-4 text-3xl sm:text-4xl font-semibold tracking-tight">
-              Start shopping smarter ✨
-            </h1>
-            <p className="mt-3 text-sm text-slate-600 leading-relaxed max-w-xl">
-              Register to save your cart, manage orders, and unlock a smoother
-              checkout experience.
-            </p>
-
-            <div className="mt-8 rounded-3xl bg-white border border-sky-100 p-6">
-              <div className="text-sm font-semibold">
-                What you’ll build later
-              </div>
-              <ul className="mt-3 space-y-2 text-sm text-slate-600">
-                <li>• Email verification + JWT/Auth</li>
-                <li>• Stripe checkout + order creation</li>
-                <li>• Address book + profile settings</li>
-                <li>• Order tracking + notifications</li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        {/* Right */}
-        <div className="lg:col-span-6">
+      <div className="grid gap-8 lg:grid-cols-12 items-start mx-auto max-w-[570px]">
+        <div className="lg:col-span-12">
           <Card className="rounded-3xl border-slate-200">
             <CardContent className="p-6 sm:p-10">
               <div>
