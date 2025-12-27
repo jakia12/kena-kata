@@ -1,4 +1,4 @@
-import ReduxProvider from "@/store/provider";
+import ReduxProvider from "@/store/slices/provider";
 import "./globals.css";
 
 export default function RootLayout({ children }) {
