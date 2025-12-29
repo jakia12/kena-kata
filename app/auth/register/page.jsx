@@ -18,41 +18,27 @@ const initialForm = {
 };
 
 export default function RegisterPage() {
-  const [form, setForm] = useState(initialForm);
-  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [formError, setFormError] = useState("");
+  const [errors, setErrors] = useState({});
 
-  function handleChange(e) {
-    const { name, value, type, checked } = e.target;
-
-    // IMPORTANT: update the state key that matches input "name"
-    setForm((prev) => ({
-      ...prev,
-      [name]: type === "checkbox" ? checked : value,
-    }));
-  }
-
-  function handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
+    setLoading(true);
     setError("");
 
-    if (form.password !== form.confirmPassword) {
-      setError("Passwords do not match");
-      return;
-    }
-    if (!form.agree) {
-      setError("Please accept Terms & Privacy Policy");
-      return;
-    }
+    const formData = new FormData(e.currentTarget);
+    console.log(formData);
 
-    const payload = {
-      firstName: form.firstName.trim(),
-      lastName: form.lastName.trim(),
-      email: form.email.trim(),
-      password: form.password,
-    };
-
-    console.log("REGISTER PAYLOAD ✅", payload);
-  }
+    const firstName = String(formData.get("firstName") || "").trim();
+    const lastName = String(formData.get("lastName") || "").trim();
+    const email = String(formData.get("email") || "").trim();
+    const password = String(formData.get("password") || "").trim();
+    const confirmPassword = String(
+      formData.get("confirmPassword") || ""
+    ).trim();
+    const agree = Boolean(formData.get("agree"));
+  };
 
   return (
     <Container className="py-10">
