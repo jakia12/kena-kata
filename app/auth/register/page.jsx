@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const initialForm = {
@@ -21,7 +22,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [errors, setErrors] = useState({});
-
+  const router = useRouter();
   async function handleSubmit(e) {
     e.preventDefault();
     setFormError("");
@@ -62,8 +63,25 @@ export default function RegisterPage() {
         email: valid.email.trim(),
         password: valid.password,
       };
-
       console.log("valid registered payload", payload);
+      const registerRes = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const registerData = await registerRes.json();
+
+      if (!registerRes.ok) {
+        throw new Error(registerData?.message || "Registration failed");
+      }
+
+      router.push("/login");
     } catch (err) {
       setFormError(err?.message || "Something went wrong");
     } finally {
