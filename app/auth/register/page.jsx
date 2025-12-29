@@ -79,7 +79,7 @@ export default function RegisterPage() {
             <div>
               <h2 className="text-xl font-semibold">Create account</h2>
               <p className="mt-1 text-sm text-slate-500">
-                Sign up in seconds (practice form state).
+                Uncontrolled form + Zod validation.
               </p>
             </div>
 
@@ -93,11 +93,15 @@ export default function RegisterPage() {
                 </label>
                 <Input
                   name="firstName"
-                  value={form.firstName}
-                  onChange={handleChange}
                   className="mt-2 h-11 rounded-xl"
                   placeholder="Mofazzel"
+                  autoComplete="given-name"
                 />
+                {errors.firstName && (
+                  <p className="mt-1 text-xs text-red-600">
+                    {errors.firstName}
+                  </p>
+                )}
               </div>
 
               <div className="sm:col-span-1">
@@ -106,11 +110,13 @@ export default function RegisterPage() {
                 </label>
                 <Input
                   name="lastName"
-                  value={form.lastName}
-                  onChange={handleChange}
                   className="mt-2 h-11 rounded-xl"
                   placeholder="Ivey"
+                  autoComplete="family-name"
                 />
+                {errors.lastName && (
+                  <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>
+                )}
               </div>
 
               <div className="sm:col-span-2">
@@ -119,11 +125,14 @@ export default function RegisterPage() {
                 </label>
                 <Input
                   name="email"
-                  value={form.email}
-                  onChange={handleChange}
+                  type="email"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="you@example.com"
+                  autoComplete="email"
                 />
+                {errors.email && (
+                  <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+                )}
               </div>
 
               <div className="sm:col-span-2">
@@ -133,11 +142,13 @@ export default function RegisterPage() {
                 <Input
                   name="password"
                   type="password"
-                  value={form.password}
-                  onChange={handleChange}
                   className="mt-2 h-11 rounded-xl"
                   placeholder="••••••••"
+                  autoComplete="new-password"
                 />
+                {errors.password && (
+                  <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+                )}
               </div>
 
               <div className="sm:col-span-2">
@@ -146,34 +157,45 @@ export default function RegisterPage() {
                 </label>
                 <Input
                   name="confirmPassword"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
+                  type="password"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="••••••••"
+                  autoComplete="new-password"
                 />
+                {errors.confirmPassword && (
+                  <p className="mt-1 text-xs text-red-600">
+                    {errors.confirmPassword}
+                  </p>
+                )}
               </div>
 
               <div className="sm:col-span-2 flex items-start gap-2 text-sm text-slate-600">
                 <input
                   type="checkbox"
                   name="agree"
-                  checked={form.agree}
-                  onChange={handleChange}
                   className="mt-1 h-4 w-4 rounded border-slate-300"
                 />
                 <span>I agree to the Terms and Privacy Policy.</span>
               </div>
+              {errors.agree && (
+                <p className="sm:col-span-2 text-xs text-red-600">
+                  {errors.agree}
+                </p>
+              )}
 
-              {error && (
-                <p className="sm:col-span-2 text-sm text-red-600">{error}</p>
+              {formError && (
+                <p className="sm:col-span-2 text-sm text-red-600">
+                  {formError}
+                </p>
               )}
 
               <div className="sm:col-span-2">
                 <Button
                   type="submit"
-                  className="h-12 w-full rounded-2xl bg-emerald-600 hover:bg-emerald-700"
+                  disabled={loading}
+                  className="h-12 w-full rounded-2xl bg-emerald-600 hover:bg-emerald-700 disabled:opacity-60"
                 >
-                  Create account
+                  {loading ? "Validating..." : "Create account"}
                 </Button>
               </div>
             </form>
