@@ -22,23 +22,54 @@ export default function RegisterPage() {
   const [formError, setFormError] = useState("");
   const [errors, setErrors] = useState({});
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setFormError("");
+    setErrors({});
     setLoading(true);
-    setError("");
 
-    const formData = new FormData(e.currentTarget);
-    console.log(formData);
+    try {
+      const fd = new FormData(e.currentTarget);
 
-    const firstName = String(formData.get("firstName") || "").trim();
-    const lastName = String(formData.get("lastName") || "").trim();
-    const email = String(formData.get("email") || "").trim();
-    const password = String(formData.get("password") || "").trim();
-    const confirmPassword = String(
-      formData.get("confirmPassword") || ""
-    ).trim();
-    const agree = Boolean(formData.get("agree"));
-  };
+      const raw = {
+        firstName: String(fd.get("firstName") || ""),
+        lastName: String(fd.get("lastName") || ""),
+        email: String(fd.get("email") || ""),
+        password: String(fd.get("password") || ""),
+        confirmPassword: String(fd.get("confirmPassword") || ""),
+        agree: toBool(fd.get("agree")),
+      };
+
+      const result = registerSchema.safeParse(raw);
+
+      if (!result.success) {
+        const fieldErrors = {};
+        for (const issue of result.error.issues) {
+          const field = issue.path?.[0] || "form";
+          if (!fieldErrors[field]) fieldErrors[field] = issue.message;
+        }
+        setErrors(fieldErrors);
+        setLoading(false);
+        return;
+      }
+
+      console.log("form input data", result.data);
+      const valid = result.data;
+
+      const payload = {
+        firstName: valid.firstName.trim(),
+        lastName: valid.lastName.trim(),
+        email: valid.email.trim(),
+        password: valid.password,
+      };
+
+      console.log("valid registered payload", payload);
+    } catch (err) {
+      setFormError(err?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  }
 
   return (
     <Container className="py-10">
