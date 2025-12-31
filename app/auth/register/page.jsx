@@ -55,8 +55,7 @@ export default function RegisterPage() {
       const valid = result.data;
 
       const payload = {
-        firstName: valid.firstName.trim(),
-        lastName: valid.lastName.trim(),
+        name: `${valid.firstName.trim()} ${valid.lastName.trim()}`.trim(),
         email: valid.email.trim(),
         password: valid.password,
       };
@@ -75,14 +74,18 @@ export default function RegisterPage() {
       const registerData = await registerRes.json();
 
       if (!registerRes.ok) {
-        throw new Error(registerData?.message || "Registration failed");
+        toast.error(registerData?.message || "Registration failed", {
+          className: "bg-red-50 text-red-700 border border-red-200",
+        });
+      } else {
+        toast.success(registerData?.message || "Registration successful", {
+          className: "bg-green-50 text-green-700 border border-green-200",
+        });
+
+        setTimeout(() => {
+          router.push("/auth/login");
+        }, 800);
       }
-
-      toast.success("Registration successfull");
-
-      setTimeout(() => {
-        router.push("/auth/login");
-      }, 800);
     } catch (err) {
       setFormError(err?.message || "Something went wrong");
     } finally {
