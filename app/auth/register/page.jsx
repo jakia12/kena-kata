@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import { registerSchema } from "@/lib/validators/registerSchema";
+import { toast } from "sonner";
 
 function toBool(v) {
   return v === "on" || v === "true" || v === true;
@@ -77,7 +78,11 @@ export default function RegisterPage() {
         throw new Error(registerData?.message || "Registration failed");
       }
 
-      router.push("/auth/login");
+      toast.success("Registration successfull");
+
+      setTimeout(() => {
+        router.push("/auth/login");
+      }, 800);
     } catch (err) {
       setFormError(err?.message || "Something went wrong");
     } finally {
@@ -111,9 +116,7 @@ export default function RegisterPage() {
                   placeholder="Mofazzel"
                 />
                 {errors.firstName && (
-                  <p className="mt-1 text-xs text-red-600">
-                    {errors.firstName}
-                  </p>
+                  <p className="mt-1 text-sm red">{errors.firstName}</p>
                 )}
               </div>
 
@@ -127,7 +130,7 @@ export default function RegisterPage() {
                   placeholder="Ivey"
                 />
                 {errors.lastName && (
-                  <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>
+                  <p className="mt-1 text-sm red">{errors.lastName}</p>
                 )}
               </div>
 
@@ -142,7 +145,7 @@ export default function RegisterPage() {
                   placeholder="you@example.com"
                 />
                 {errors.email && (
-                  <p className="mt-1 text-xs text-red-600">{errors.email}</p>
+                  <p className="mt-1 text-sm red">{errors.email}</p>
                 )}
               </div>
 
@@ -157,7 +160,7 @@ export default function RegisterPage() {
                   placeholder="••••••••"
                 />
                 {errors.password && (
-                  <p className="mt-1 text-xs text-red-600">{errors.password}</p>
+                  <p className="mt-1 text-sm red">{errors.password}</p>
                 )}
               </div>
 
@@ -172,9 +175,7 @@ export default function RegisterPage() {
                   placeholder="••••••••"
                 />
                 {errors.confirmPassword && (
-                  <p className="mt-1 text-xs text-red-600">
-                    {errors.confirmPassword}
-                  </p>
+                  <p className="mt-1 text-sm red">{errors.confirmPassword}</p>
                 )}
               </div>
 
@@ -187,15 +188,11 @@ export default function RegisterPage() {
                 <span>I agree to the Terms and Privacy Policy.</span>
               </div>
               {errors.agree && (
-                <p className="sm:col-span-2 text-xs text-red-600">
-                  {errors.agree}
-                </p>
+                <p className="sm:col-span-2 text-sm red">{errors.agree}</p>
               )}
 
               {formError && (
-                <p className="sm:col-span-2 text-sm text-red-600">
-                  {formError}
-                </p>
+                <p className="sm:col-span-2 text-sm red">{formError}</p>
               )}
 
               <div className="sm:col-span-2">
@@ -211,7 +208,7 @@ export default function RegisterPage() {
 
             <div className="relative py-5">
               <Separator />
-              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-xs text-slate-500">
+              <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-sm text-slate-500">
                 or
               </span>
             </div>
