@@ -9,20 +9,18 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-const initialForm = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
-  agree: false,
-};
+import { registerSchema } from "@/lib/validators/registerSchema";
+
+function toBool(v) {
+  return v === "on" || v === "true" || v === true;
+}
 
 export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [formError, setFormError] = useState("");
   const [errors, setErrors] = useState({});
   const router = useRouter();
+
   async function handleSubmit(e) {
     e.preventDefault();
     setFormError("");
@@ -33,9 +31,9 @@ export default function RegisterPage() {
       const fd = new FormData(e.currentTarget);
 
       const raw = {
-        firstName: String(fd.get("firstName") || ""),
-        lastName: String(fd.get("lastName") || ""),
-        email: String(fd.get("email") || ""),
+        firstName: String(fd.get("firstName") || "").trim(),
+        lastName: String(fd.get("lastName") || "").trim(),
+        email: String(fd.get("email") || "").trim(),
         password: String(fd.get("password") || ""),
         confirmPassword: String(fd.get("confirmPassword") || ""),
         agree: toBool(fd.get("agree")),
@@ -50,11 +48,9 @@ export default function RegisterPage() {
           if (!fieldErrors[field]) fieldErrors[field] = issue.message;
         }
         setErrors(fieldErrors);
-        setLoading(false);
         return;
       }
 
-      console.log("form input data", result.data);
       const valid = result.data;
 
       const payload = {
@@ -63,17 +59,17 @@ export default function RegisterPage() {
         email: valid.email.trim(),
         password: valid.password,
       };
-      console.log("valid registered payload", payload);
-      const registerRes = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/auth/register`,
-        {
-          method: "POST",
-          headers: {
-            "Content-type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        }
-      );
+
+      const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+      if (!baseUrl) {
+        throw new Error("Missing NEXT_PUBLIC_API_BASE_URL in .env.local");
+      }
+
+      const registerRes = await fetch(`${baseUrl}/auth/register`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
       const registerData = await registerRes.json();
 
@@ -81,7 +77,7 @@ export default function RegisterPage() {
         throw new Error(registerData?.message || "Registration failed");
       }
 
-      router.push("/login");
+      router.push("/auth/login");
     } catch (err) {
       setFormError(err?.message || "Something went wrong");
     } finally {
@@ -113,7 +109,6 @@ export default function RegisterPage() {
                   name="firstName"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="Mofazzel"
-                  autoComplete="given-name"
                 />
                 {errors.firstName && (
                   <p className="mt-1 text-xs text-red-600">
@@ -130,7 +125,6 @@ export default function RegisterPage() {
                   name="lastName"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="Ivey"
-                  autoComplete="family-name"
                 />
                 {errors.lastName && (
                   <p className="mt-1 text-xs text-red-600">{errors.lastName}</p>
@@ -146,7 +140,6 @@ export default function RegisterPage() {
                   type="email"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="you@example.com"
-                  autoComplete="email"
                 />
                 {errors.email && (
                   <p className="mt-1 text-xs text-red-600">{errors.email}</p>
@@ -162,7 +155,6 @@ export default function RegisterPage() {
                   type="password"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="••••••••"
-                  autoComplete="new-password"
                 />
                 {errors.password && (
                   <p className="mt-1 text-xs text-red-600">{errors.password}</p>
@@ -178,7 +170,6 @@ export default function RegisterPage() {
                   type="password"
                   className="mt-2 h-11 rounded-xl"
                   placeholder="••••••••"
-                  autoComplete="new-password"
                 />
                 {errors.confirmPassword && (
                   <p className="mt-1 text-xs text-red-600">
