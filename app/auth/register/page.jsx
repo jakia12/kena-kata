@@ -100,9 +100,6 @@ export default function RegisterPage() {
           <CardContent className="p-6 sm:p-10">
             <div>
               <h2 className="text-xl font-semibold">Create account</h2>
-              <p className="mt-1 text-sm text-slate-500">
-                Uncontrolled form + Zod validation.
-              </p>
             </div>
 
             <form
