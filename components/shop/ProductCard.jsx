@@ -1,5 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { Eye, Heart } from "lucide-react";
 import Link from "next/link";
 
 function Stars({ value = 0 }) {
@@ -34,10 +35,13 @@ export function ProductCard({ product }) {
   const img = product?.images?.[0];
 
   return (
-    <Card className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+    <Card
+      className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
+      style={{ paddingTop: 0, paddingBottom: 0 }}
+    >
       <CardContent className="p-0">
         {/* Image */}
-        <Link href={`/products/${product.slug}`} className="block">
+        <Link href={`/shop/products/${product.slug}`} className="block">
           <div className="relative aspect-[4/3] bg-slate-50">
             {/* Badge */}
             <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
@@ -59,26 +63,26 @@ export function ProductCard({ product }) {
               <div className="pointer-events-auto flex items-center gap-2">
                 <button
                   type="button"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 hover:bg-white"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 transition hover:bg-white hover:text-emerald-600"
                   title="Quick view"
                   onClick={(e) => {
                     e.preventDefault();
-                    // open modal later
                   }}
                 >
-                  👁️
+                  <Eye size={18} />
                 </button>
+
                 <button
                   type="button"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 hover:bg-white"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 transition hover:bg-white hover:text-rose-600"
                   title="Wishlist"
                   onClick={(e) => {
                     e.preventDefault();
-                    // wishlist later
                   }}
                 >
-                  ♡
+                  <Heart size={18} />
                 </button>
+
                 <button
                   type="button"
                   className="h-10 rounded-full bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700"
@@ -97,7 +101,7 @@ export function ProductCard({ product }) {
             <img
               src={img || "/placeholder.png"}
               alt={title}
-              className="h-full w-full object-contain p-6 transition duration-300 group-hover:scale-[1.03]"
+              className="h-[280px] w-full  transition duration-300 group-hover:scale-[1.03]"
               onError={(e) => {
                 e.currentTarget.src = "/placeholder.png";
               }}
@@ -109,7 +113,7 @@ export function ProductCard({ product }) {
         <div className="p-5">
           <div className="min-h-[44px]">
             <Link
-              href={`/products/${product.slug}`}
+              href={`/shop/products/${product.slug}`}
               className="line-clamp-2 text-[15px] font-semibold text-slate-900 hover:text-emerald-700"
             >
               {title}
