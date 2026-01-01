@@ -2,69 +2,164 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 
-export function ProductCard({ product, variant = "grid" }) {
+function Stars({ value = 0 }) {
+  const v = Math.max(0, Math.min(5, Number(value) || 0));
+  const full = Math.floor(v);
+  const half = v - full >= 0.5;
+
   return (
-    <Card className="rounded-3xl border-slate-200">
-      <CardContent className="p-4">
-        <div className="flex items-start justify-between gap-3">
-          <div className="text-xs text-slate-500">{product.category}</div>
+    <div className="flex items-center gap-1">
+      {Array.from({ length: 5 }).map((_, i) => {
+        const isFull = i < full;
+        const isHalf = i === full && half;
 
-          {product.tag ? (
-            <Badge
-              className="rounded-full border border-emerald-100 bg-emerald-50 text-emerald-700"
-              variant="outline"
-            >
-              {product.tag}
-            </Badge>
-          ) : null}
-        </div>
+        return (
+          <span key={i} className="text-xs">
+            {isFull ? "★" : isHalf ? "⯪" : "☆"}
+          </span>
+        );
+      })}
+    </div>
+  );
+}
 
-        <Link href={`/product/${product.slug}`} className="block">
-          <div
-            className={`mt-3 grid place-items-center rounded-2xl bg-slate-100 ${
-              variant === "wide" ? "aspect-[16/10]" : "aspect-square"
-            }`}
-          >
-            <div className="text-4xl">🥑</div>
-          </div>
+export function ProductCard({ product }) {
+  const title = product?.title ?? product?.name ?? "Untitled product";
+  const brand = product?.brand ?? product?.vendor ?? "";
+  const category = product?.category ?? "";
+  const price = Number(product?.price ?? 0);
+  const compareAt = Number(product?.compareAtPrice ?? product?.oldPrice ?? 0);
+  const ratingAvg = Number(product?.ratingAvg ?? 0);
+  const ratingCount = Number(product?.ratingCount ?? 0);
+  const img = product?.images?.[0];
 
-          <div className="mt-4">
-            <div className="line-clamp-2 text-sm font-semibold hover:text-emerald-700">
-              {product.name}
+  return (
+    <Card className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md">
+      <CardContent className="p-0">
+        {/* Image */}
+        <Link href={`/products/${product.slug}`} className="block">
+          <div className="relative aspect-[4/3] bg-slate-50">
+            {/* Badge */}
+            <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
+              {category ? (
+                <Badge className="rounded-full bg-white/90 text-slate-700 border border-slate-200">
+                  {category}
+                </Badge>
+              ) : null}
+
+              {compareAt > price ? (
+                <Badge className="rounded-full bg-emerald-600 text-white border-emerald-600">
+                  Sale
+                </Badge>
+              ) : null}
             </div>
 
-            <div className="mt-1 text-xs text-slate-500">
-              By {product.vendor}
-            </div>
-
-            <div className="mt-3 flex items-center justify-between">
-              <div className="flex items-end gap-2">
-                <div className="font-semibold text-emerald-700">
-                  ${product.price.toFixed(2)}
-                </div>
-
-                {product.oldPrice ? (
-                  <div className="text-xs text-slate-400 line-through">
-                    ${product.oldPrice.toFixed(2)}
-                  </div>
-                ) : null}
+            {/* Hover actions */}
+            <div className="pointer-events-none absolute inset-0 z-10 flex items-center justify-center opacity-0 transition group-hover:opacity-100">
+              <div className="pointer-events-auto flex items-center gap-2">
+                <button
+                  type="button"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 hover:bg-white"
+                  title="Quick view"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // open modal later
+                  }}
+                >
+                  👁️
+                </button>
+                <button
+                  type="button"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 hover:bg-white"
+                  title="Wishlist"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // wishlist later
+                  }}
+                >
+                  ♡
+                </button>
+                <button
+                  type="button"
+                  className="h-10 rounded-full bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700"
+                  title="Add to cart"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // add to cart later
+                  }}
+                >
+                  Add
+                </button>
               </div>
-
-              <div className="text-xs text-slate-500">
-                ⭐ {product.rating.toFixed(1)}
-              </div>
             </div>
+
+            {/* Image */}
+            <img
+              src={img || "/placeholder.png"}
+              alt={title}
+              className="h-full w-full object-contain p-6 transition duration-300 group-hover:scale-[1.03]"
+              onError={(e) => {
+                e.currentTarget.src = "/placeholder.png";
+              }}
+            />
           </div>
         </Link>
 
-        <div className="mt-4 grid grid-cols-2 gap-2">
-          <button className="h-10 rounded-xl border border-slate-200 text-sm hover:bg-slate-50">
-            ♡ Wishlist
-          </button>
+        {/* Info */}
+        <div className="p-5">
+          <div className="min-h-[44px]">
+            <Link
+              href={`/products/${product.slug}`}
+              className="line-clamp-2 text-[15px] font-semibold text-slate-900 hover:text-emerald-700"
+            >
+              {title}
+            </Link>
 
-          <button className="h-10 rounded-xl bg-emerald-600 text-sm text-white hover:bg-emerald-700">
-            Add
-          </button>
+            {brand ? (
+              <p className="mt-1 text-xs text-slate-500">By {brand}</p>
+            ) : (
+              <p className="mt-1 text-xs text-slate-500">&nbsp;</p>
+            )}
+          </div>
+
+          <div className="mt-4 flex items-center justify-between">
+            <div className="flex items-end gap-2">
+              <div className="text-lg font-semibold text-slate-900">
+                ${price.toFixed(2)}
+              </div>
+
+              {compareAt > price ? (
+                <div className="text-sm text-slate-400 line-through">
+                  ${compareAt.toFixed(2)}
+                </div>
+              ) : null}
+            </div>
+
+            <div className="flex items-center gap-2 text-slate-600">
+              <Stars value={ratingAvg} />
+              <span className="text-xs">
+                {ratingAvg ? ratingAvg.toFixed(1) : "0.0"}
+                {ratingCount ? ` (${ratingCount})` : ""}
+              </span>
+            </div>
+          </div>
+
+          {/* Bottom actions (mobile-friendly, always visible) */}
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:hidden">
+            <button
+              type="button"
+              className="h-10 rounded-2xl border border-slate-200 text-sm hover:bg-slate-50"
+            >
+              ♡ Wishlist
+            </button>
+
+            <button
+              type="button"
+              className="h-10 rounded-2xl bg-emerald-600 text-sm font-medium text-white hover:bg-emerald-700"
+            >
+              Add
+            </button>
+          </div>
         </div>
       </CardContent>
     </Card>
