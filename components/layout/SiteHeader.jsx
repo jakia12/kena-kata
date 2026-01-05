@@ -1,12 +1,13 @@
-import { MobileMenuSheet } from "@/components/layout/MobileMenuSheet";
 import { TopBar } from "@/components/layout/TopBar";
 import { Container } from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+
 import { navLinks } from "@/data/nav";
 import Link from "next/link";
+import { MobileMenuSheet } from "./MobileMenuSheet";
 
-function Icon({ children }: { children: React.ReactNode }) {
+function Icon({ children }) {
   return (
     <span className="grid h-10 w-10 place-items-center rounded-full border border-slate-200 bg-white">
       {children}

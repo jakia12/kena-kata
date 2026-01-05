@@ -1,10 +1,6 @@
 import Link from "next/link";
 
-export function CategoryCard({
-  category,
-}: {
-  category
-}) {
+export function CategoryCard({ category }) {
   return (
     <Link
       href={`/category/${category.slug}`}

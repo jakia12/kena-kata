@@ -2,7 +2,7 @@ import { deals } from "@/data/deals";
 import { Container } from "../shared/Container";
 import { SectionHeader } from "../shared/SectionHeader";
 
-function DealCard({ d }: { d: (typeof deals)[number] }) {
+function DealCard({ d }) {
   return (
     <div className="rounded-3xl border border-slate-200 overflow-hidden bg-white">
       <div className="aspect-[16/9] bg-slate-100 grid place-items-center text-4xl">

@@ -5,11 +5,6 @@ export function SectionHeader({
   subtitle,
   rightHref,
   rightLabel = "View all",
-}: {
-  title: string,
-  subtitle?: string,
-  rightHref?: string,
-  rightLabel?: string,
 }) {
   return (
     <div className="flex items-end justify-between gap-4">

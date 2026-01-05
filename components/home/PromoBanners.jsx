@@ -1,17 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Container } from "../shared/Container";
 
-function Banner({
-  title,
-  desc,
-  emoji,
-  tone,
-}: {
-  title: string,
-  desc: string,
-  emoji: string,
-  tone: "sand" | "pink" | "blue",
-}) {
+function Banner({ title, desc, emoji, tone }) {
   const toneMap = {
     sand: "bg-amber-50 border-amber-100",
     pink: "bg-rose-50 border-rose-100",

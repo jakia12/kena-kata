@@ -2,7 +2,7 @@ import { products } from "@/data/products";
 import Link from "next/link";
 import { Container } from "../shared/Container";
 
-function Row({ title, items }: { title: string, items: typeof products }) {
+function Row({ title, items }) {
   return (
     <div className="rounded-3xl border border-slate-200 bg-white p-5">
       <div className="flex items-center justify-between">
