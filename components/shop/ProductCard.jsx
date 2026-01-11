@@ -1,5 +1,4 @@
 "use client";
-import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Eye, Heart } from "lucide-react";
 import Link from "next/link";
@@ -42,20 +41,20 @@ export function ProductCard({ product }) {
     >
       <CardContent className="p-0">
         {/* Image */}
-        <Link href={`/shop/products/${product.slug}`} className="block">
+        <Link href={`/shop/products/${product._id}`} className="block">
           <div className="relative aspect-[4/3] bg-slate-50">
-            {/* Badge */}
+            {/* span */}
             <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
               {category ? (
-                <Badge className="rounded-full bg-white/90 text-slate-700 border border-slate-200">
+                <span className="rounded-full bg-white/90 text-slate-700 border border-slate-200">
                   {category}
-                </Badge>
+                </span>
               ) : null}
 
               {compareAt > price ? (
-                <Badge className="rounded-full bg-emerald-600 text-white border-emerald-600">
+                <span className="rounded-full bg-emerald-600 text-white border-emerald-600">
                   Sale
-                </Badge>
+                </span>
               ) : null}
             </div>
 
@@ -114,7 +113,7 @@ export function ProductCard({ product }) {
         <div className="p-5">
           <div className="min-h-[44px]">
             <Link
-              href={`/shop/products/${product.slug}`}
+              href={`/shop/products/${product.id}`}
               className="line-clamp-2 text-[15px] font-semibold text-slate-900 hover:text-emerald-700"
             >
               {title}

@@ -56,9 +56,12 @@ export const apiSlice = createApi({
       providesTags: ["Products"],
     }),
     // ✅ SINGLE PRODUCT (by slug)
-    getProductBySlug: builder.query({
-      query: (slug) => `/products/${slug}`,
-      providesTags: (result, error, slug) => [{ type: "Products", id: slug }],
+
+    getProductById: builder.query({
+      query: (id) => `/products/${id}`,
+      transformResponse: (response) =>
+        response.product || response.data || response,
+      providesTags: (result, error, id) => [{ type: "Products", id }],
     }),
 
     // ✅ CATEGORIES
@@ -73,6 +76,7 @@ export const apiSlice = createApi({
 export const {
   useLoginMutation,
   useGetMeQuery,
+  useGetProductByIdQuery,
   useGetProductsQuery,
   useGetCategoriesQuery,
 } = apiSlice;
