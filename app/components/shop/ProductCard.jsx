@@ -1,7 +1,11 @@
 "use client";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
+import { addToCart } from "@/store/slices/cartSlice";
+import { addToWishlist } from "@/store/slices/wishlistSlice";
 import { Eye, Heart } from "lucide-react";
 import Link from "next/link";
+import { useDispatch } from "react-redux";
 
 function Stars({ value = 0 }) {
   const v = Math.max(0, Math.min(5, Number(value) || 0));
@@ -34,6 +38,7 @@ export function ProductCard({ product }) {
   const ratingCount = Number(product?.ratingCount ?? 0);
   const img = product?.images?.[0];
 
+  const dispatch = useDispatch();
   return (
     <Card
       className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
@@ -46,15 +51,15 @@ export function ProductCard({ product }) {
             {/* span */}
             <div className="absolute left-3 top-3 z-10 flex items-center gap-2">
               {category ? (
-                <span className="rounded-full bg-white/90 text-slate-700 border border-slate-200">
+                <Badge className="rounded-full bg-white/90 text-slate-700 border border-slate-200">
                   {category}
-                </span>
+                </Badge>
               ) : null}
 
               {compareAt > price ? (
-                <span className="rounded-full bg-emerald-600 text-white border-emerald-600">
+                <Badge className="rounded-full bg-emerald-600 text-white border-emerald-600">
                   Sale
-                </span>
+                </Badge>
               ) : null}
             </div>
 
@@ -63,10 +68,11 @@ export function ProductCard({ product }) {
               <div className="pointer-events-auto flex items-center gap-2">
                 <button
                   type="button"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 transition hover:bg-white hover:text-emerald-600"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 transition hover:bg-white hover:text-emerald-600 cursor-pointer"
                   title="Quick view"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
                   }}
                 >
                   <Eye size={18} />
@@ -74,10 +80,12 @@ export function ProductCard({ product }) {
 
                 <button
                   type="button"
-                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 transition hover:bg-white hover:text-rose-600"
+                  className="grid h-10 w-10 place-items-center rounded-full bg-white/95 shadow-sm ring-1 ring-slate-200 transition hover:bg-white hover:text-rose-600 cursor-pointer"
                   title="Wishlist"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
+                    dispatch(addToWishlist(product));
                   }}
                 >
                   <Heart size={18} />
@@ -85,10 +93,12 @@ export function ProductCard({ product }) {
 
                 <button
                   type="button"
-                  className="h-10 rounded-full bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700"
+                  className="h-10 rounded-full bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 cursor-pointer"
                   title="Add to cart"
                   onClick={(e) => {
                     e.preventDefault();
+                    e.stopPropagation();
+                    dispatch(addToCart(product));
                     // add to cart later
                   }}
                 >
@@ -113,7 +123,7 @@ export function ProductCard({ product }) {
         <div className="p-5">
           <div className="min-h-[44px]">
             <Link
-              href={`/shop/products/${product.id}`}
+              href={`/shop/products/${product._id}`}
               className="line-clamp-2 text-[15px] font-semibold text-slate-900 hover:text-emerald-700"
             >
               {title}

@@ -1,7 +1,7 @@
-import { CategoryCard } from "@/components/shop/CategoryCard";
 import { categories } from "@/data/categories";
 import { Container } from "../shared/Container";
 import { SectionHeader } from "../shared/SectionHeader";
+import { CategoryCard } from "../shop/CategoryCard";
 
 export function FeaturedCategories() {
   return (

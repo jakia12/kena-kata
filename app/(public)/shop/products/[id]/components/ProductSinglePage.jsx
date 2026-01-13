@@ -45,11 +45,12 @@ const ProductSinglePage = ({ id }) => {
           </span>
         </div>
 
-        <h1 className="mt-3 text-3xl font-semibold tracking-tight">{p.name}</h1>
+        <h1 className="mt-3 text-3xl font-semibold tracking-tight">
+          {p.title}
+        </h1>
 
         <p className="mt-3 text-sm leading-relaxed text-slate-600">
-          This is a product details UI that looks production-ready. Later you’ll
-          connect real data, reviews, and Stripe checkout.
+          {p.description}
         </p>
 
         <div className="mt-5 flex items-end gap-3">
@@ -106,7 +107,7 @@ const ProductSinglePage = ({ id }) => {
 
             <div className="flex justify-between border-b border-slate-100 pb-2">
               <span>SKU</span>
-              <span>NM-{p.slug.slice(0, 6).toUpperCase()}</span>
+              <span>{p.sku}</span>
             </div>
 
             <div className="flex justify-between border-b border-slate-100 pb-2">

@@ -1,5 +1,5 @@
-import { Container } from "@/components/shared/Container";
 import Link from "next/link";
+import { Container } from "../shared/Container";
 
 export function TopBar() {
   return (

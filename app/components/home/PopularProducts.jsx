@@ -1,9 +1,10 @@
 "use client";
 
 import { useGetProductsQuery } from "@/apiSlice";
-import { ProductCard } from "@/components/shop/ProductCard";
+
 import { Container } from "../shared/Container";
 import { SectionHeader } from "../shared/SectionHeader";
+import { ProductCard } from "../shop/ProductCard";
 
 export function PopularProducts() {
   const { data, isLoading, isError } = useGetProductsQuery({

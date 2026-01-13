@@ -13,10 +13,10 @@ export const navLinks = [
   },
   {
     label: "Wishlist",
-    href: "/wishlist",
+    href: "/shop/wishlist",
   },
   {
     label: "Cart",
-    href: "/cart",
+    href: "/shop/cart",
   },
 ];

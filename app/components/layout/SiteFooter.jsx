@@ -1,6 +1,6 @@
-import { Container } from "@/components/shared/Container";
 import { Separator } from "@/components/ui/separator";
 import Link from "next/link";
+import { Container } from "../shared/Container";
 
 export function SiteFooter() {
   return (

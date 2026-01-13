@@ -1,11 +1,13 @@
+import cartReducer from "@/store/slices/cartSlice";
+import wishlistReducer from "@/store/slices/wishlistSlice";
 import { configureStore } from "@reduxjs/toolkit";
 import { apiSlice } from "./api/apiSlice";
-import uiReducer from "./ui/uiSlice";
 
 export const store = configureStore({
   reducer: {
-    ui: uiReducer, // UI-only state (drawer etc.)
     [apiSlice.reducerPath]: apiSlice.reducer,
+    cart: cartReducer,
+    wishlist: wishlistReducer,
   },
   middleware: (getDefault) => getDefault().concat(apiSlice.middleware),
 });

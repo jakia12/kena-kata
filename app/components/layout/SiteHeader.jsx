@@ -1,11 +1,14 @@
-import { TopBar } from "@/components/layout/TopBar";
-import { Container } from "@/components/shared/Container";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { navLinks } from "@/data/nav";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { Container } from "../shared/Container";
 import { MobileMenuSheet } from "./MobileMenuSheet";
+import { TopBar } from "./TopBar";
 
 function Icon({ children }) {
   return (
@@ -16,6 +19,12 @@ function Icon({ children }) {
 }
 
 export function SiteHeader() {
+  const cartCount = useSelector((s) =>
+    s.cart.items.reduce((sum, item) => sum + item.qty, 0)
+  );
+
+  const wishlistCount = useSelector((s) => (s.wishlist?.items || []).length);
+
   return (
     <header className="sticky top-0 z-50 bg-white">
       <TopBar />
@@ -64,14 +73,16 @@ export function SiteHeader() {
                   ⚖ Compare
                 </span>
                 <span className="rounded-full bg-slate-100 px-3 py-2">
-                  ♡ Wishlist
+                  ♡ Wishlist <span>{wishlistCount}</span>
                 </span>
               </div>
             </div>
 
             <div className="ml-auto flex items-center gap-2">
-              <Link href="/cart" className="hidden sm:block">
-                <Icon>🛒</Icon>
+              <Link href="/shop/cart" className="hidden sm:block">
+                <Icon>
+                  🛒 <span>{cartCount}</span>
+                </Icon>
               </Link>
               <Link href="/account" className="hidden sm:block">
                 <Icon>👤</Icon>
