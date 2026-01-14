@@ -69,11 +69,56 @@ export const apiSlice = createApi({
       query: () => "/products/categories",
       providesTags: ["Products"],
     }),
+    // all mutation
+
+    // ✅ CART
+    getMyCart: builder.query({
+      query: () => "/cart",
+      providesTags: ["Cart"],
+    }),
+
+    upsertCartItem: builder.mutation({
+      query: ({ productId, qty = 1 }) => ({
+        url: "/cart",
+        method: "POST",
+        body: { productId, qty },
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+
+    removeCartItem: builder.mutation({
+      query: (productId) => ({
+        url: `/cart/${productId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Cart"],
+    }),
+
+    addToWishlist: builder.mutation({
+      query: ({ productId }) => ({
+        url: "/wishlist",
+        method: "POST",
+        body: { productId },
+      }),
+      invalidatesTags: ["Me"],
+    }),
+
+    removeFromWishlist: builder.mutation({
+      query: ({ productId }) => ({
+        url: `/wishlist/${productId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Me"],
+    }),
   }),
 });
 
 // ✅ Auto-generated hooks
 export const {
+  useGetMyCartQuery,
+  useUpsertCartItemMutation,
+  useAddToWishlistMutation,
+  useRemoveFromWishlistMutation,
   useLoginMutation,
   useGetMeQuery,
   useGetProductByIdQuery,

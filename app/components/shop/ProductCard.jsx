@@ -1,4 +1,5 @@
 "use client";
+import { useUpsertCartItemMutation } from "@/apiSlice";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { addToCart } from "@/store/slices/cartSlice";
@@ -39,6 +40,10 @@ export function ProductCard({ product }) {
   const img = product?.images?.[0];
 
   const dispatch = useDispatch();
+
+  // const [addToWishlistApi] = useAddToWishlistMutation();
+  const [upsertCartItem] = useUpsertCartItemMutation();
+
   return (
     <Card
       className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
@@ -86,6 +91,12 @@ export function ProductCard({ product }) {
                     e.preventDefault();
                     e.stopPropagation();
                     dispatch(addToWishlist(product));
+                    // try{
+                    //   await addToWishlistApi({productId.product._id}).unwrap();
+                    // }catch(err){
+                    //   dispatch(addToWishlist(product))
+                    //   console.error(err)
+                    // }
                   }}
                 >
                   <Heart size={18} />
@@ -95,11 +106,18 @@ export function ProductCard({ product }) {
                   type="button"
                   className="h-10 rounded-full bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 cursor-pointer"
                   title="Add to cart"
-                  onClick={(e) => {
+                  onClick={async (e) => {
                     e.preventDefault();
                     e.stopPropagation();
                     dispatch(addToCart(product));
-                    // add to cart later
+                    try {
+                      await upsertCartItem({
+                        productId: product._id,
+                        qty: 1,
+                      }).unwrap();
+                    } catch (err) {
+                      console.error("Failed to sync cart:", err);
+                    }
                   }}
                 >
                   Add
