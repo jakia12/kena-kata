@@ -1,6 +1,5 @@
 "use client";
 
-import { Container } from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -9,6 +8,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { Container } from "@/app/components/shared/Container";
 import { registerSchema } from "@/lib/validators/registerSchema";
 import { toast } from "sonner";
 

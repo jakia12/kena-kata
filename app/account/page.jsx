@@ -1,17 +1,9 @@
-import { Container } from "@/components/shared/Container";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
+import { Container } from "../components/shared/Container";
 
-function StatCard({
-  title,
-  value,
-  hint,
-}: {
-  title: string,
-  value: string,
-  hint: string,
-}) {
+function StatCard({ title, value, hint }) {
   return (
     <Card className="rounded-3xl border-slate-200">
       <CardContent className="p-5">
@@ -23,7 +15,7 @@ function StatCard({
   );
 }
 
-function InfoRow({ label, value }: { label: string, value: string }) {
+function InfoRow({ label, value }) {
   return (
     <div className="flex items-start justify-between gap-6 border-b border-slate-100 py-3 text-sm">
       <div className="text-slate-500">{label}</div>

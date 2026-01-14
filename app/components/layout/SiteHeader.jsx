@@ -7,6 +7,7 @@ import { navLinks } from "@/data/nav";
 import Link from "next/link";
 import { useSelector } from "react-redux";
 import { Container } from "../shared/Container";
+import AuthButton from "./AuthButton";
 import { MobileMenuSheet } from "./MobileMenuSheet";
 import { TopBar } from "./TopBar";
 
@@ -88,12 +89,7 @@ export function SiteHeader() {
                 <Icon>👤</Icon>
               </Link>
               <div className="hidden md:flex flex-col items-end ml-2">
-                <div className="text-sm font-semibold text-emerald-700">
-                  1900 - 888
-                </div>
-                <div className="text-xs text-slate-500">
-                  24/7 Support Center
-                </div>
+                <AuthButton />
               </div>
             </div>
           </div>
