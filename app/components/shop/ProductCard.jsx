@@ -44,6 +44,22 @@ export function ProductCard({ product }) {
   // const [addToWishlistApi] = useAddToWishlistMutation();
   const [upsertCartItem] = useUpsertCartItemMutation();
 
+  const handleAddToCart = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    dispatch(addToCart(product));
+    try {
+      const res = await upsertCartItem({
+        productId: product._id,
+        qty: 1,
+      }).unwrap();
+      console.log("the res data", res);
+    } catch (err) {
+      console.error("Failed to sync cart:", err);
+    }
+  };
+
   return (
     <Card
       className="group overflow-hidden rounded-3xl border-slate-200 bg-white shadow-sm transition hover:-translate-y-0.5 hover:shadow-md"
@@ -106,19 +122,7 @@ export function ProductCard({ product }) {
                   type="button"
                   className="h-10 rounded-full bg-emerald-600 px-4 text-sm font-medium text-white shadow-sm hover:bg-emerald-700 cursor-pointer"
                   title="Add to cart"
-                  onClick={async (e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    dispatch(addToCart(product));
-                    try {
-                      await upsertCartItem({
-                        productId: product._id,
-                        qty: 1,
-                      }).unwrap();
-                    } catch (err) {
-                      console.error("Failed to sync cart:", err);
-                    }
-                  }}
+                  onClick={handleAddToCart}
                 >
                   Add
                 </button>

@@ -4,15 +4,11 @@ export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_API_BASE_URL,
-    prepareHeaders: (headers) => {
-      // only runs in browser
-      if (typeof window !== "undefined") {
-        const token = localStorage.getItem("token");
-        if (token) {
-          headers.set("authorization", `Bearer ${token}`); // ✅ fixed
-        }
-      }
-      return headers; // ✅ must return headers
+
+    prepareHeaders: (headers, { getState }) => {
+      const token = getState().auth?.token; // adjust path
+      if (token) headers.set("authorization", `Bearer ${token}`);
+      return headers;
     },
   }),
 
